@@ -183,8 +183,8 @@ func (driver *Driver) AreVolumeCapabilitiesSupported(volCapabilities []*csi.Volu
 // From an existing volume. When plugin supports cloning, and reports the OPTIONAL capabilities CREATE_DELETE_VOLUME and CLONE_VOLUME.
 // nolint : gocyclo
 func (driver *Driver) CreateVolume(ctx context.Context, request *csi.CreateVolumeRequest) (*csi.CreateVolumeResponse, error) {
-	log.Trace(">>>>> CreateVolume")
-	defer log.Trace("<<<<< CreateVolume")
+	log.Infof(">>>>> CreateVolume, VolumeId: %s", request.Name)
+	defer log.Infof("<<<<< CreateVolume, VolumeId: %s", request.Name)
 
 	log.Infof("CreateVolume requested volume '%s' with the following Capabilities: '%v' and Parameters: '%v'",
 		request.Name, request.VolumeCapabilities, request.Parameters)
@@ -595,8 +595,8 @@ func (driver *Driver) createVolume(
 // This operation MUST be idempotent. If a volume corresponding to the specified volume_id does not exist or the
 // artifacts associated with the volume do not exist anymore, the Plugin MUST reply 0 OK.
 func (driver *Driver) DeleteVolume(ctx context.Context, request *csi.DeleteVolumeRequest) (*csi.DeleteVolumeResponse, error) {
-	log.Trace(">>>>> DeleteVolume")
-	defer log.Trace("<<<<< DeleteVolume")
+	log.Infof(">>>>> DeleteVolume, VolumeId: %s", request.VolumeId)
+	defer log.Infof("<<<<< DeleteVolume, VolumeId: %s", request.VolumeId)
 
 	if request.VolumeId == "" {
 		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("Invalid Volume ID %s specified for DeleteVolume", request.VolumeId))
@@ -691,8 +691,8 @@ func (driver *Driver) deleteVolume(volumeID string, secrets map[string]string, f
 // MULTI_NODE_SINGLE_WRITER or MULTI_NODE_MULTI_WRITER).
 // nolint: gocyclo
 func (driver *Driver) ControllerPublishVolume(ctx context.Context, request *csi.ControllerPublishVolumeRequest) (*csi.ControllerPublishVolumeResponse, error) {
-	log.Trace(">>>>> ControllerPublishVolume")
-	defer log.Trace("<<<<< ControllerPublishVolume")
+	log.Infof(">>>>> ControllerPublishVolume, VolumeId: %s, NodeId: %s", request.VolumeId, request.NodeId)
+	defer log.Infof("<<<<< ControllerPublishVolume, VolumeId: %s, NodeId: %s", request.VolumeId, request.NodeId)
 
 	if request.VolumeId == "" {
 		return nil, status.Error(codes.InvalidArgument, "Volume ID not provided to ControllerPublishVolume")
@@ -943,8 +943,8 @@ func (driver *Driver) controllerPublishVolume(
 // the Plugin MUST reply 0 OK. If this operation failed, or the CO does not know if the operation failed or not, it can choose to call
 // ControllerUnpublishVolume again.
 func (driver *Driver) ControllerUnpublishVolume(ctx context.Context, request *csi.ControllerUnpublishVolumeRequest) (*csi.ControllerUnpublishVolumeResponse, error) {
-	log.Trace(">>>>> ControllerUnpublishVolume")
-	defer log.Trace("<<<<< ControllerUnpublishVolume")
+	log.Infof(">>>>> ControllerUnpublishVolume, VolumeId: %s, NodeId: %s", request.VolumeId, request.NodeId)
+	defer log.Infof("<<<<< ControllerUnpublishVolume, VolumeId: %s, NodeId: %s", request.VolumeId, request.NodeId)
 
 	if request.VolumeId == "" {
 		return nil, status.Error(codes.InvalidArgument, "Volume ID not provided to ControllerUnpublishVolume")
