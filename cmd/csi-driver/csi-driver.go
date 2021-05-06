@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	csiVersion           = "1.3"
+	csiVersion           = "2.0.0"
 	csiDriverName        = "csi.hpe.com"
 	csiControllerLogFile = "/var/log/hpe-csi-controller.log"
 	csiNodeLogFile       = "/var/log/hpe-csi-node.log"
@@ -46,7 +46,6 @@ var (
 		TraverseChildren: true,
 		Run: func(cmd *cobra.Command, args []string) {
 			isNode, _ := cmd.Flags().GetBool("node-service")
-			driverImage, _ := cmd.Flags().GetString("image")
 			log.Info(cmd.VersionTemplate())
 			if isNode {
 				log.InitLogging(csiNodeLogFile, nil, true)
@@ -56,8 +55,6 @@ var (
 			log.Info("**********************************************")
 			log.Info("*************** HPE CSI DRIVER ***************")
 			log.Info("**********************************************")
-
-			log.Infof("Driver image %s", driverImage)
 
 			log.Infof(">>>>> CMDLINE Exec, args: %v", args)
 			defer log.Info("<<<<< CMDLINE Exec")
